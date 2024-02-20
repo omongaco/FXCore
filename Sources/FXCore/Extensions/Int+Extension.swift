@@ -31,4 +31,45 @@ public extension Int {
     func toDouble() -> Double {
         return Double(self)
     }
+    
+    /// Converts an integer (epoch time) to a `Date` object.
+    var toDate: Date {
+        return Date(timeIntervalSince1970: TimeInterval(self))
+    }
+
+    /// Formats the integer as a localized string with commas (or appropriate local separators).
+    var formattedWithCommas: String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
+
+    /// Converts the integer from bytes to megabytes.
+    var toMegabytes: Double {
+        return Double(self) / 1_024 / 1_024
+    }
+
+    /// Checks if the integer is even.
+    var isEven: Bool {
+        return self % 2 == 0
+    }
+
+    /// Checks if the integer is odd.
+    var isOdd: Bool {
+        return self % 2 != 0
+    }
+
+    /// Converts the integer to a string with a specified radix (base).
+    /// Useful for converting numbers to binary, hexadecimal, etc.
+    func toString(radix: Int) -> String {
+        return String(self, radix: radix)
+    }
+
+    /// Returns a string with the integer spelled out.
+    /// E.g., 1 becomes "one".
+    var spelledOut: String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .spellOut
+        return numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
 }

@@ -8,10 +8,10 @@
 import Foundation
 
 public extension String {
-    public static let emptyString = ""
-    public static let whitespace = " "
+    static let emptyString = ""
+    static let whitespace = " "
     
-    public var boolValue: Bool? {
+    var boolValue: Bool? {
         switch self.lowercased() {
         case "1", "true", "yes":
             return true
@@ -22,23 +22,23 @@ public extension String {
         }
     }
     
-    public var isNotEmpty: Bool {
+    var isNotEmpty: Bool {
         return !isEmpty
     }
     
-    public func localize() -> String {
+    func localize() -> String {
         return LanguageManager.shared.getI18nStringValue(of: self)
     }
     
-    public func localize(in language: Languages) -> String {
+    func localize(in language: Languages) -> String {
         return LanguageManager.shared.getI18nStringValue(of: self, in: language)
     }
     
-    public func localize(with variables: [String:String]) -> String {
+    func localize(with variables: [String:String]) -> String {
         return LanguageManager.shared.getI18nStringValue(of: self, with: variables)
     }
     
-    public func getIndex(from: Int) -> Index {
+    func getIndex(from: Int) -> Index {
         if from < count {
             return self.index(startIndex, offsetBy: from)
         } else {
@@ -46,23 +46,23 @@ public extension String {
         }
     }
     
-    public func substring(from index: Int) -> String {
+    func substring(from index: Int) -> String {
         let fromIndex = getIndex(from: index)
         return String(self[fromIndex...])
     }
     
-    public func substring(to index: Int) -> String {
+    func substring(to index: Int) -> String {
         let toIndex = getIndex(from: index)
         return String(self[..<toIndex])
     }
     
-    public func substring(with range: Range<Int>) -> String {
+    func substring(with range: Range<Int>) -> String {
         let startIndex = getIndex(from: range.lowerBound)
         let endIndex = getIndex(from: range.upperBound)
         return String(self[startIndex..<endIndex])
     }
     
-    public static func from(json: Any) -> String {
+    static func from(json: Any) -> String {
         do {
             let data1 =  try JSONSerialization.data(withJSONObject: json, options: [])
             return String(data: data1, encoding: String.Encoding.utf8) ?? ""
@@ -71,25 +71,25 @@ public extension String {
         }
     }
     
-    public var length: Int {
+    var length: Int {
         return count
     }
     
-    public var lastPathComponent: String {
+    var lastPathComponent: String {
         return (self as NSString).lastPathComponent
     }
     
-    public var deletingPathExtension: String {
+    var deletingPathExtension: String {
         return (self as NSString).deletingPathExtension
     }
     
-    public static func separatorStringArrayToString(stringArray: [String]) -> String {
+    static func separatorStringArrayToString(stringArray: [String]) -> String {
         let filterStringArr = stringArray.filter({ $0.isNotEmpty })
         return filterStringArr.joined(separator: "\n")
     }
     
     // MARK: HTML to attributed strings
-    public var html2AttributedString: NSAttributedString? {
+    var html2AttributedString: NSAttributedString? {
         guard let tempData = data(using: .utf8, allowLossyConversion: true) else { return nil }
         do {
             let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html,
@@ -103,7 +103,7 @@ public extension String {
     }
     
     // MARK: Attributed strings to HTML
-    public func attributedStringFromHTML(completionBlock: @escaping (NSAttributedString?) -> Void) {
+    func attributedStringFromHTML(completionBlock: @escaping (NSAttributedString?) -> Void) {
         guard let data = data(using: .utf8, allowLossyConversion: true) else {
             return completionBlock(nil)
         }
@@ -119,13 +119,14 @@ public extension String {
             }
         }
     }
+    
     // MARK: Add Characters at Index
-    public mutating func insert(string:String,ind:Int) {
+    mutating func insert(string:String,ind:Int) {
         self.insert(contentsOf: string, at: self.index(self.startIndex, offsetBy: ind))
     }
     
     // MARK: Add Characters at Index
-    public mutating func separateWithPattern(every pattern: [Int] = [4]) {
+    mutating func separateWithPattern(every pattern: [Int] = [4]) {
         var joinedString: String = ""
         let enumeratedChar = self.removeWhitespace().enumerated()
         for (number, characters) in enumeratedChar {
@@ -141,7 +142,7 @@ public extension String {
 }
 
 public extension String {
-    public func maxLengthWithDot(name: String, length: Int) -> String {
+    func maxLengthWithDot(name: String, length: Int) -> String {
         if name.length > length {
             return String(name.prefix(length) + "...")
         } else {
@@ -151,11 +152,11 @@ public extension String {
 }
 
 public extension String {
-    public func string(byStrippingCharactersOtherThan characters: CharacterSet) -> String {
+    func string(byStrippingCharactersOtherThan characters: CharacterSet) -> String {
         return String(String.UnicodeScalarView(unicodeScalars.filter { characters.contains($0) }))
     }
     
-    public func sanitizedProxyID(maxChars: Int = 13) -> String {
+    func sanitizedProxyID(maxChars: Int = 13) -> String {
         var sanitizedProxyID = string(byStrippingCharactersOtherThan: CharacterSet.decimalDigits)
         if sanitizedProxyID.length > maxChars {
             let maxIndex = sanitizedProxyID.index(sanitizedProxyID.startIndex, offsetBy: maxChars)
@@ -167,7 +168,7 @@ public extension String {
 }
 
 public extension String {
-    public var amountFormat: String {
+    var amountFormat: String {
         let amountFormatter = Formatter.amountFormatter
         amountFormatter.minimumFractionDigits = 2
         amountFormatter.maximumFractionDigits = 2
@@ -177,7 +178,7 @@ public extension String {
         return ""
     }
     
-    public var amountUnitFormat: String {
+    var amountUnitFormat: String {
         let amountFormatter = Formatter.amountFormatter
         amountFormatter.minimumFractionDigits = 4
         amountFormatter.maximumFractionDigits = 4
@@ -189,7 +190,7 @@ public extension String {
         return ""
     }
     
-    public var amountDouble: Double? {
+    var amountDouble: Double? {
         let amountFormatter = Formatter.amountFormatter
         amountFormatter.minimumFractionDigits = .zero
         amountFormatter.maximumFractionDigits = .zero
@@ -197,11 +198,11 @@ public extension String {
         return number?.doubleValue
     }
     
-    public var digits: String {
+    var digits: String {
         return components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
     }
     
-    public func editingFormatted(maxDecimalsCount: Int) -> String {
+    func editingFormatted(maxDecimalsCount: Int) -> String {
         
         let amountFormatter = Formatter.amountFormatter
         let items = components(separatedBy: amountFormatter.decimalSeparator)
@@ -235,7 +236,7 @@ public extension String {
         return ""
     }
     
-    public func editingFormatted(maxDecimalsCount: Int, maxDigits: Int) -> String {
+    func editingFormatted(maxDecimalsCount: Int, maxDigits: Int) -> String {
         
         let amountFormatter = Formatter.amountFormatter
         let items = components(separatedBy: amountFormatter.decimalSeparator)
@@ -269,7 +270,7 @@ public extension String {
 }
 
 public extension String {
-    public var plusString: String {
+    var plusString: String {
         guard let convertToDouble = Double(self) else {
             return self.amountFormat
         }
@@ -279,7 +280,7 @@ public extension String {
         return self.amountFormat
     }
     
-    public var minusString: String {
+    var minusString: String {
         guard let convertToDouble = Double(self) else {
             return self.amountFormat
         }
@@ -291,22 +292,22 @@ public extension String {
 }
 
 public extension String {
-    public func isValidUsing(regex: String) -> Bool {
+    func isValidUsing(regex: String) -> Bool {
         //Validating message
         let messagePattern = regex
         let containSpecialCharacters = self.range(of: messagePattern, options: .regularExpression) != nil
         return self == "" || containSpecialCharacters
     }
     
-    public var trimmedString: String {
+    var trimmedString: String {
         return self.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    public var containsEmoji: Bool {
+    var containsEmoji: Bool {
         return unicodeScalars.contains { $0.isEmoji }
     }
     
-    public var isBackspace: Bool {
+    var isBackspace: Bool {
         var backspaceSet = CharacterSet()
         backspaceSet.insert(charactersIn: "\\b")
         if self.rangeOfCharacter(from: backspaceSet.inverted) == nil {
@@ -322,41 +323,41 @@ public extension String {
      - Returns: 'String' object.
      https://gist.github.com/budidino/8585eecd55fd4284afaaef762450f98e
      */
-    public func trunc(length: Int, trailing: String = "") -> String {
+    func trunc(length: Int, trailing: String = "") -> String {
         return (self.count > length) ? self.prefix(length) + trailing : self
     }
     
-    public func removingLeadingSpaces() -> String {
+    func removingLeadingSpaces() -> String {
         guard let index = firstIndex(where: { !CharacterSet(charactersIn: String($0)).isSubset(of: .whitespaces) }) else {
             return self
         }
         return String(self[index...])
     }
     
-    public func replace(string:String, replacement:String) -> String {
+    func replace(string:String, replacement:String) -> String {
         return self.replacingOccurrences(of: string, with: replacement, options: NSString.CompareOptions.literal, range: nil)
     }
     
-    public func removeWhitespace() -> String {
+    func removeWhitespace() -> String {
         return self.replace(string: " ", replacement: "")
     }
     
-    public func removeMinusString() -> String {
+    func removeMinusString() -> String {
         return self.replace(string: "-", replacement: "")
     }
     
-    public func removeExtraSpaces() -> String {
+    func removeExtraSpaces() -> String {
         return self.replacingOccurrences(of: "[\\s\n]+", with: " ", options: .regularExpression, range: nil)
     }
     
-    public func removeBracket() -> String {
+    func removeBracket() -> String {
         return self.replace(string: "(", replacement: "").replace(string: ")", replacement: "")
     }
 }
 
 // MARK: Encoded JSON decimal cleaner
 public extension String {
-    public func getDecimalValue(decimalPlaces: Int) -> Decimal {
+    func getDecimalValue(decimalPlaces: Int) -> Decimal {
         let numberFormatter = NumberFormatter()
         numberFormatter.decimalSeparator = "."
         numberFormatter.groupingSeparator = String.emptyString
@@ -369,10 +370,95 @@ public extension String {
         }
     }
     
-    public func isEmptyOrWhiteSpace() -> Bool {
+    func isEmptyOrWhiteSpace() -> Bool {
         if self.isEmpty {
             return true
         }
         return (self.trimmingCharacters(in: .whitespaces) == .emptyString)
+    }
+    
+    enum DateFormat: String {
+        case dateshortyear
+        case dateshortday
+        case datetime
+        case datemedium
+        case datefull
+        case time24hrs
+        case time12hrs
+        case timesecond24hrs
+        case timesecond12hrs
+        
+        var value: String {
+            switch self {
+            case .dateshortyear:
+                return "yyyy-MM-dd"
+            case .dateshortday:
+                return "dd-MM-yyyy"
+            case .datetime:
+                return "yyyy-MM-dd HH:mm:ss"
+            case .datemedium:
+                return "MMM d, yyyy"
+            case .datefull:
+                return "EEEE, MMM d, yyyy"
+            case .time24hrs:
+                return "HH:mm"
+            case .time12hrs:
+                return "hh:mm a"
+            case .timesecond24hrs:
+                return "HH:mm:ss"
+            case .timesecond12hrs:
+                return "hh:mm:ss a"
+            }
+        }
+    }
+    
+    /// Converts a string to a `Date` using the specified format.
+    func toDate(withFormat format: DateFormat) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format.rawValue
+        return dateFormatter.date(from: self)
+    }
+    
+    /// Attempts to convert the string to an `Int`.
+    func toInt() -> Int? {
+        return Int(self)
+    }
+    
+    /// Checks if the string is a valid email address.
+    var isValidEmail: Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: self)
+    }
+    
+    /// Trims whitespace and newlines from the string.
+    var trimmed: String {
+        return self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    /// Encodes the string for URL query parameters.
+    var urlEncoded: String? {
+        return self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
+    
+    /// Decodes HTML entities in the string.
+    var htmlDecoded: String {
+        guard let data = self.data(using: .utf8) else { return self }
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+        let decodedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil).string
+        return decodedString ?? self
+    }
+    
+    /// Reverses the string.
+    var reversed: String {
+        return String(self.reversed())
+    }
+    
+    /// Checks if the string contains only digits.
+    var isNumeric: Bool {
+        return !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
     }
 }
