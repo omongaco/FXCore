@@ -90,8 +90,8 @@ public class LanguageManager: LanguageManagerProtocol {
     }
     
     private func getBundleJsonFileUrl() -> URL? {
-        return Bundle(for: LanguageManager.self).url(forResource: Constants.jsonFileName,
-        withExtension: Constants.jsonExtension)
+        return Bundle.module.url(forResource: Constants.jsonFileName,
+                                 withExtension: Constants.jsonExtension)
     }
     
     private func writeToBundleJsonFile(languagePack: LanguagePack) {
